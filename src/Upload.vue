@@ -194,14 +194,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-::v-deep .v-overlay__content {
+<style scoped>
+::v-deep >>> .v-overlay__content {
     width: 90%;
     max-width: 500px;
+}
 
-    .files-list-wrapper {
-        max-height: 250px;
-        overflow-y: auto;
-    }
+::v-deep .v-overlay__content >>> .files-list-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
 }
 </style>

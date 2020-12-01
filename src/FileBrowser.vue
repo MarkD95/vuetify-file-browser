@@ -61,12 +61,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
-import Toolbar from "./Toolbar.vue";
-import Tree from "./Tree.vue";
-import List from "./List.vue";
-import Upload from "./Upload.vue";
+import Toolbar from './Toolbar.vue';
+import Tree from './Tree.vue';
+import List from './List.vue';
+import Upload from './Upload.vue';
 
 const availableStorages = [
     {
@@ -120,7 +120,7 @@ export default {
         Toolbar,
         Tree,
         List,
-        Upload
+        Upload,
     },
     model: {
         prop: "path",
@@ -192,7 +192,7 @@ export default {
             if (this.uploadingFiles === false) {
                 this.uploadingFiles = [];
             }
-            
+
             if (this.maxUploadFilesCount && this.uploadingFiles.length + files.length > this.maxUploadFilesCount) {
                 files = files.slice(0, this.maxUploadFilesCount - this.uploadingFiles.length);
             }
@@ -222,6 +222,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

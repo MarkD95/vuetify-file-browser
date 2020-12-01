@@ -161,25 +161,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-/* Storage Menu - alternate appearance
-.storage-select-button ::v-deep .v-btn__content {
-    flex-wrap: wrap;
-    font-size: 11px;
-
-    .v-icon {
-        width: 100%;
-        font-size: 22px;
-    }
-}
-*/
-
-.storage-select-list .v-list-item--disabled {
+<style scoped>
+.storage-select-list >>> .v-list-item--disabled {
     background-color: rgba(0, 0, 0, 0.25);
     color: #fff;
-
-    .v-icon {
-        color: #fff;
-    }
+}
+.storage-select-list >>> .v-list-item--disabled >>> .v-icon {
+    color: #fff;
 }
 </style>

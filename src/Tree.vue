@@ -170,25 +170,22 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .folders-tree-card {
     height: 100%;
+}
+.folders-tree-card .scroll-x {
+    overflow-x: auto;
+}
 
-    .scroll-x {
-        overflow-x: auto;
-    }
-
-    ::v-deep .folders-tree {
-        width: fit-content;
-        min-width: 250px;
-
-        .v-treeview-node {
-            cursor: pointer;
-
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.02);
-            }
-        }
-    }
+.folders-tree-card ::v-deep .folders-tree {
+    width: fit-content;
+    min-width: 250px;
+}
+.folders-tree-card ::v-deep .folders-tree >>> .v-treeview-node {
+    cursor: pointer;
+}
+.folders-tree-card ::v-deep .folders-tree >>> .v-treeview-node:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 </style>
