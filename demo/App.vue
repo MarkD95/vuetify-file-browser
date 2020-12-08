@@ -9,39 +9,18 @@
     </v-app-bar>
 
     <v-main>
-      <v-row no-gutters class="row-pad">
-        <FileBrowser class="fbrowser"
-            :axiosConfig="{baseURL: url}"
-            :maxUploadFileSize="5242880"
-            :maxUploadFilesCount="5"
-        />
-      </v-row>
+        <FileBrowser />
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Vue from 'vue';
-import FileBrowser from '../src/FileBrowser.vue';
 
 export default Vue.extend({
   name: 'App',
   components: {
-    FileBrowser,
-  },
-  data () {
-    return {
-      url: 'https://vuetify-file-browser-server.herokuapp.com',
-    };
+    FileBrowser: () => import('./Browser'),
   },
 });
 </script>
-
-<style>
-.row-pad {
-    padding: 1rem 0;
-}
-.fbrowser {
-    width: 70%;
-}
-</style>
