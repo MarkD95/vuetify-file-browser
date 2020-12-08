@@ -25,6 +25,7 @@
                                 v-text="icons[file.extension] || 'mdi-file'"
                                 class="mdi-36px"
                                 color="grey lighten-1"
+                                :aria-label="'icon ' + (icons[file.extension] || 'mdi-file')"
                             ></v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
@@ -32,7 +33,7 @@
                             <v-list-item-subtitle>{{ formatBytes(file.size) }} - {{ file.type }}</v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-btn icon @click="remove(index)">
+                            <v-btn :aria-label="'Close'" icon @click="remove(index)">
                                 <v-icon color="grey lighten-1">mdi-close</v-icon>
                             </v-btn>
                         </v-list-item-action>
@@ -40,7 +41,7 @@
                 </v-list>
             </v-card-text>
             <v-card-text v-else class="py-6 text-center">
-                <v-btn @click="$refs.inputUpload.click()">
+                <v-btn :aria-label="'Add files'" @click="$refs.inputUpload.click()">
                     <v-icon left>mdi-plus-circle</v-icon>Add files
                 </v-btn>
             </v-card-text>
@@ -48,7 +49,7 @@
             <v-toolbar dense flat>
                 <div class="grow"></div>
                 <v-btn text @click="cancel" class="mx-1">Cancel</v-btn>
-                <v-btn depressed color="warning" @click="clear" class="mx-1" :disabled="!files">
+                <v-btn aria-label="Close" depressed color="warning" @click="clear" class="mx-1" :disabled="!files">
                     <v-icon>mdi-close</v-icon>Clear
                 </v-btn>
                 <v-btn
@@ -57,6 +58,7 @@
                     color="info"
                     @click="$refs.inputUpload.click()"
                     class="mx-1"
+                    aria-label="Add files"
                 >
                     <v-icon left>mdi-plus-circle</v-icon>Add Files
                     <input
@@ -67,7 +69,7 @@
                         @change="add"
                     />
                 </v-btn>
-                <v-btn depressed color="success" @click="upload" class="ml-1" :disabled="!files">
+                <v-btn depressed color="success" @click="upload" class="ml-1" :disabled="!files" aria-label="Upload">
                     Upload
                     <v-icon right>mdi-upload-outline</v-icon>
                 </v-btn>

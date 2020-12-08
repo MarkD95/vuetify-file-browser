@@ -3,7 +3,7 @@
         <v-toolbar-items>
             <v-menu offset-y v-if="storages.length > 1">
                 <template v-slot:activator="{ on }">
-                    <v-btn icon class="storage-select-button mr-3" v-on="on">
+                    <v-btn icon class="storage-select-button mr-3" v-on="on" aria-label="Drop">
                         <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
                     </v-btn>
                 </template>
@@ -15,18 +15,18 @@
                         @click="changeStorage(item.code)"
                     >
                         <v-list-item-icon>
-                            <v-icon v-text="item.icon"></v-icon>
+                            <v-icon v-text="item.icon" aria-label="List item"></v-icon>
                         </v-list-item-icon>
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn text :input-value="path === '/'" @click="changePath('/')">
+            <v-btn text :input-value="path === '/'" @click="changePath('/')" aria-label="Storage icon">
                 <v-icon class="mr-2">{{storageObject.icon}}</v-icon>
                 {{storageObject.name}}
             </v-btn>
             <template v-for="(segment, index) in pathSegments">
-                <v-icon :key="index + '-icon'">mdi-chevron-right</v-icon>
+                <v-icon :key="index + '-icon'" aria-label="Go back">mdi-chevron-right</v-icon>
                 <v-btn
                     text
                     :input-value="index === pathSegments.length - 1"
@@ -40,7 +40,7 @@
         <template v-if="$vuetify.breakpoint.smAndUp">
             <v-tooltip bottom v-if="pathSegments.length > 0">
                 <template v-slot:activator="{ on }">
-                    <v-btn icon @click="goUp" v-on="on">
+                    <v-btn icon @click="goUp" v-on="on" aria-label="Go up">
                         <v-icon>mdi-arrow-up-bold-outline</v-icon>
                     </v-btn>
                 </template>
@@ -54,7 +54,7 @@
                 offset-y
             >
                 <template v-slot:activator="{ on }">
-                    <v-btn v-if="path" icon v-on="on" title="Create Folder">
+                    <v-btn v-if="path" icon v-on="on" title="Create Folder" aria-label="Create directory">
                         <v-icon>mdi-folder-plus-outline</v-icon>
                     </v-btn>
                 </template>
@@ -74,7 +74,7 @@
                     </v-card-actions>
                 </v-card>
             </v-menu>
-            <v-btn v-if="path" icon @click="$refs.inputUpload.click()" title="Upload Files">
+            <v-btn v-if="path" icon @click="$refs.inputUpload.click()" title="Upload Files" aria-label="Upload Files">
                 <v-icon>mdi-plus-circle</v-icon>
                 <input v-show="false" ref="inputUpload" type="file" multiple @change="addFiles" />
             </v-btn>

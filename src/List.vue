@@ -65,11 +65,11 @@
         </v-card-text>
         <v-card-text
             v-else-if="filter"
-            class="grow d-flex justify-center align-center grey--text py-5"
+            class="grow d-flex justify-center align-center black--text py-5"
         >No files or folders found</v-card-text>
         <v-card-text
             v-else
-            class="grow d-flex justify-center align-center grey--text py-5"
+            class="grow d-flex justify-center align-center black--text py-5"
         >The folder is empty</v-card-text>
         <v-divider v-if="path"></v-divider>
         <v-toolbar v-if="false && path && isFile" dense flat class="shrink">

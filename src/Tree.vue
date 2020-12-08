@@ -19,7 +19,7 @@
                     <v-icon
                         v-if="item.type === 'dir'"
                     >{{ open ? 'mdi-folder-open-outline' : 'mdi-folder-outline' }}</v-icon>
-                    <v-icon v-else>{{ icons[item.extension.toLowerCase()] || icons['other'] }}</v-icon>
+                    <v-icon v-else aria-label="File directory">{{ icons[item.extension.toLowerCase()] || icons['other'] }}</v-icon>
                 </template>
                 <template v-slot:label="{ item }">
                     {{item.basename}}
@@ -28,6 +28,7 @@
                         v-if="item.type === 'dir'"
                         @click.stop="readFolder(item)"
                         class="ml-1"
+                        aria-label="Refresh"
                     >
                         <v-icon class="pa-0 mdi-18px" color="grey lighten-1">mdi-refresh</v-icon>
                     </v-btn>
@@ -47,7 +48,7 @@
             ></v-text-field>
             <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                    <v-btn icon @click="init" v-on="on">
+                    <v-btn icon @click="init" v-on="on" aria-label="Collapse">
                         <v-icon>mdi-collapse-all-outline</v-icon>
                     </v-btn>
                 </template>
