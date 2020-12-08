@@ -87,10 +87,10 @@
                 prepend-inner-icon="mdi-filter-outline"
                 class="ml-n3"
             ></v-text-field>
-            <v-btn icon v-if="false">
+            <v-btn icon v-if="false" aria-label="Settings">
                 <v-icon>mdi-eye-settings-outline</v-icon>
             </v-btn>
-            <v-btn icon @click="load">
+            <v-btn icon @click="load" aria-label="Refresh">
                 <v-icon>mdi-refresh</v-icon>
             </v-btn>
         </v-toolbar>
