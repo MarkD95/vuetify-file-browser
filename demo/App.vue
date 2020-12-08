@@ -9,9 +9,11 @@
     </v-app-bar>
 
     <v-main>
-      <v-row no-gutters>
-        <FileBrowser
-            :axiosConfig="{baseURL: 'http://localhost:8081'}"
+      <v-row no-gutters class="row-pad">
+        <FileBrowser class="fbrowser"
+            :axiosConfig="{baseURL: url}"
+            :maxUploadFileSize="5242880"
+            :maxUploadFilesCount="5"
         />
       </v-row>
     </v-main>
@@ -29,11 +31,17 @@ export default Vue.extend({
   },
   data () {
     return {
-      name: '',
-      url: 'http://',
+      url: 'https://vuetify-file-browser-server.herokuapp.com',
     };
-  },
-  methods: {
   },
 });
 </script>
+
+<style>
+.row-pad {
+    padding: 1rem 0;
+}
+.fbrowser {
+    width: 70%;
+}
+</style>

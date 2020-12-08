@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import { formatBytes } from "./util";
+import { formatBytes } from './util';
 
-const imageMimeTypes = ["image/png", "image/jpeg"];
+const imageMimeTypes = ['image/png', 'image/jpeg'];
 
 export default {
     props: {
@@ -114,7 +114,7 @@ export default {
                     name: file.name,
                     type: file.type,
                     size: file.size,
-                    extension: file.name.split(".").pop()
+                    extension: file.name.split('.').pop()
                 };
                 return new Promise(resolve => {
                     if (!imageMimeTypes.includes(result.type)) {
@@ -134,22 +134,22 @@ export default {
 
         async add(event) {
             let files = Array.from(event.target.files);
-            this.$emit("add-files", files);
-            this.$refs.inputUpload.value = "";
+            this.$emit('add-files', files);
+            this.$refs.inputUpload.value = '';
         },
 
         remove(index) {
-            this.$emit("remove-file", index);
+            this.$emit('remove-file', index);
             this.listItems.splice(index, 1);
         },
 
         clear() {
-            this.$emit("clear-files");
+            this.$emit('clear-files');
             this.listItems = [];
         },
 
         cancel() {
-            this.$emit("cancel");
+            this.$emit('cancel');
         },
 
         async upload() {
@@ -157,16 +157,16 @@ export default {
 
             // files
             for (let file of this.files) {
-                formData.append("files", file, file.name);
+                formData.append('files', file, file.name);
             }
 
             let url = this.endpoint.url
-                .replace(new RegExp("{storage}", "g"), this.storage)
-                .replace(new RegExp("{path}", "g"), this.path);
+                .replace(new RegExp('{storage}', 'g'), this.storage)
+                .replace(new RegExp('{path}', 'g'), this.path);
 
             let config = {
                 url,
-                method: this.endpoint.method || "post",
+                method: this.endpoint.method || 'post',
                 data: formData,
                 onUploadProgress: progressEvent => {
                     this.progress =
@@ -177,7 +177,7 @@ export default {
             this.uploading = true;
             let response = await this.axios.request(config);
             this.uploading = false;
-            this.$emit("uploaded");
+            this.$emit('uploaded');
         }
     },
     watch: {

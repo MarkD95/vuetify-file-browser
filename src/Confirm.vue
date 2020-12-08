@@ -44,7 +44,7 @@ export default {
         message: null,
         title: null,
         options: {
-            color: "error",
+            color: 'error',
             width: 300,
         }
     }),

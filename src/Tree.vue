@@ -72,7 +72,7 @@ export default {
             open: [],
             active: [],
             items: [],
-            filter: ""
+            filter: ''
         };
     },
     methods: {
@@ -84,50 +84,50 @@ export default {
             setTimeout(() => {
                 this.items = [
                     {
-                        type: "dir",
-                        path: "/",
-                        basename: "root",
-                        extension: "",
-                        name: "root",
+                        type: 'dir',
+                        path: '/',
+                        basename: 'root',
+                        extension: '',
+                        name: 'root',
                         children: []
                     }
                 ];
             }, 0);
-            if (this.path !== "") {
-                this.$emit("path-changed", "");
+            if (this.path !== '') {
+                this.$emit('path-changed', '');
             }
         },
         async readFolder(item) {
-            this.$emit("loading", true);
+            this.$emit('loading', true);
             let url = this.endpoints.list.url
-                .replace(new RegExp("{storage}", "g"), this.storage)
-                .replace(new RegExp("{path}", "g"), item.path);
+                .replace(new RegExp('{storage}', 'g'), this.storage)
+                .replace(new RegExp('{path}', 'g'), item.path);
 
             let config = {
                 url,
-                method: this.endpoints.list.method || "get"
+                method: this.endpoints.list.method || 'get'
             };
 
             let response = await this.axios.request(config);
 
             // eslint-disable-next-line require-atomic-updates
             item.children = response.data.map(item => {
-                if (item.type === "dir") {
+                if (item.type === 'dir') {
                     item.children = [];
                 }
                 return item;
             });
 
-            this.$emit("loading", false);
+            this.$emit('loading', false);
         },
         activeChanged(active) {
             this.active = active;
-            let path = "";
+            let path = '';
             if (active.length) {
                 path = active[0];
             }
             if (this.path != path) {
-                this.$emit("path-changed", path);
+                this.$emit('path-changed', path);
             }
         },
         findItem(path) {
@@ -160,7 +160,7 @@ export default {
             if (this.refreshPending) {
                 let item = this.findItem(this.path);
                 await this.readFolder(item);
-                this.$emit("refreshed");
+                this.$emit('refreshed');
             }
         }
     },

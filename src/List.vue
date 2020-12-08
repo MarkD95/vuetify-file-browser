@@ -98,8 +98,8 @@
 </template>
 
 <script>
-import { formatBytes } from "./util";
-import Confirm from "./Confirm.vue";
+import { formatBytes } from './util';
+import Confirm from './Confirm.vue';
 
 export default {
     props: {
@@ -116,24 +116,24 @@ export default {
     data() {
         return {
             items: [],
-            filter: ""
+            filter: ''
         };
     },
     computed: {
         dirs() {
             return this.items.filter(
                 item =>
-                    item.type === "dir" && item.basename.includes(this.filter)
+                    item.type === 'dir' && item.basename.includes(this.filter)
             );
         },
         files() {
             return this.items.filter(
                 item =>
-                    item.type === "file" && item.basename.includes(this.filter)
+                    item.type === 'file' && item.basename.includes(this.filter)
             );
         },
         isDir() {
-            return this.path[this.path.length - 1] === "/";
+            return this.path[this.path.length - 1] === '/';
         },
         isFile() {
             return !this.isDir;
@@ -142,18 +142,18 @@ export default {
     methods: {
         formatBytes,
         changePath(path) {
-            this.$emit("path-changed", path);
+            this.$emit('path-changed', path);
         },
         async load() {
-            this.$emit("loading", true);
+            this.$emit('loading', true);
             if (this.isDir) {
                 let url = this.endpoints.list.url
-                    .replace(new RegExp("{storage}", "g"), this.storage)
-                    .replace(new RegExp("{path}", "g"), this.path);
+                    .replace(new RegExp('{storage}', 'g'), this.storage)
+                    .replace(new RegExp('{path}', 'g'), this.path);
 
                 let config = {
                     url,
-                    method: this.endpoints.list.method || "get"
+                    method: this.endpoints.list.method || 'get'
                 };
 
                 let response = await this.axios.request(config);
@@ -161,30 +161,30 @@ export default {
             } else {
                 // TODO: load file
             }
-            this.$emit("loading", false);
+            this.$emit('loading', false);
         },
         async deleteItem(item) {
             let confirmed = await this.$refs.confirm.open(
-                "Delete",
+                'Delete',
                 `Are you sure<br>you want to delete this ${
-                    item.type === "dir" ? "folder" : "file"
+                    item.type === 'dir' ? 'folder' : 'file'
                 }?<br><em>${item.basename}</em>`
             );
 
             if (confirmed) {
-                this.$emit("loading", true);
+                this.$emit('loading', true);
                 let url = this.endpoints.delete.url
-                    .replace(new RegExp("{storage}", "g"), this.storage)
-                    .replace(new RegExp("{path}", "g"), item.path);
+                    .replace(new RegExp('{storage}', 'g'), this.storage)
+                    .replace(new RegExp('{path}', 'g'), item.path);
 
                 let config = {
                     url,
-                    method: this.endpoints.delete.method || "post"
+                    method: this.endpoints.delete.method || 'post'
                 };
 
                 await this.axios.request(config);
-                this.$emit("file-deleted");
-                this.$emit("loading", false);
+                this.$emit('file-deleted');
+                this.$emit('loading', false);
             }
         }
     },
@@ -196,7 +196,7 @@ export default {
         async refreshPending() {
             if (this.refreshPending) {
                 await this.load();
-                this.$emit("refreshed");
+                this.$emit('refreshed');
             }
         }
     }

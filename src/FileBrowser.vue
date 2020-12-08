@@ -70,49 +70,49 @@ import Upload from './Upload.vue';
 
 const availableStorages = [
     {
-        name: "Local",
-        code: "local",
-        icon: "mdi-folder-multiple-outline"
+        name: 'Local',
+        code: 'local',
+        icon: 'mdi-folder-multiple-outline'
     },
     {
-        name: "Amazon S3",
-        code: "s3",
-        icon: "mdi-amazon-drive"
+        name: 'Amazon S3',
+        code: 's3',
+        icon: 'mdi-amazon-drive'
     }
     /*{
-        name: "Dropbox",
-        code: "dropbox",
-        icon: "mdi-dropbox"
+        name: 'Dropbox',
+        code: 'dropbox',
+        icon: 'mdi-dropbox'
     }*/
 ];
 
 const endpoints = {
-    list: { url: "/storage/{storage}/list?path={path}", method: "get" },
-    upload: { url: "/storage/{storage}/upload?path={path}", method: "post" },
-    mkdir: { url: "/storage/{storage}/mkdir?path={path}", method: "post" },
-    delete: { url: "/storage/{storage}/delete?path={path}", method: "post" }
+    list: { url: '/storage/{storage}/list?path={path}', method: 'get' },
+    upload: { url: '/storage/{storage}/upload?path={path}', method: 'post' },
+    mkdir: { url: '/storage/{storage}/mkdir?path={path}', method: 'post' },
+    delete: { url: '/storage/{storage}/delete?path={path}', method: 'post' }
 };
 
 const fileIcons = {
-    zip: "mdi-folder-zip-outline",
-    rar: "mdi-folder-zip-outline",
-    htm: "mdi-language-html5",
-    html: "mdi-language-html5",
-    js: "mdi-nodejs",
-    json: "mdi-json",
-    md: "mdi-markdown",
-    pdf: "mdi-file-pdf",
-    png: "mdi-file-image",
-    jpg: "mdi-file-image",
-    jpeg: "mdi-file-image",
-    mp4: "mdi-filmstrip",
-    mkv: "mdi-filmstrip",
-    avi: "mdi-filmstrip",
-    wmv: "mdi-filmstrip",
-    mov: "mdi-filmstrip",
-    txt: "mdi-file-document-outline",
-    xls: "mdi-file-excel",
-    other: "mdi-file-outline"
+    zip: 'mdi-folder-zip-outline',
+    rar: 'mdi-folder-zip-outline',
+    htm: 'mdi-language-html5',
+    html: 'mdi-language-html5',
+    js: 'mdi-nodejs',
+    json: 'mdi-json',
+    md: 'mdi-markdown',
+    pdf: 'mdi-file-pdf',
+    png: 'mdi-file-image',
+    jpg: 'mdi-file-image',
+    jpeg: 'mdi-file-image',
+    mp4: 'mdi-filmstrip',
+    mkv: 'mdi-filmstrip',
+    avi: 'mdi-filmstrip',
+    wmv: 'mdi-filmstrip',
+    mov: 'mdi-filmstrip',
+    txt: 'mdi-file-document-outline',
+    xls: 'mdi-file-excel',
+    other: 'mdi-file-outline',
 };
 
 export default {
@@ -123,17 +123,17 @@ export default {
         Upload,
     },
     model: {
-        prop: "path",
-        event: "change"
+        prop: 'path',
+        event: 'change'
     },
     props: {
         // comma-separated list of active storage codes
         storages: {
             type: String,
-            default: () => availableStorages.map(item => item.code).join(",")
+            default: () => availableStorages.map(item => item.code).join(',')
         },
         // code of default storage
-        storage: { type: String, default: "local" },
+        storage: { type: String, default: 'local' },
         // show tree view
         tree: { type: Boolean, default: true },
         // file icons set
@@ -152,7 +152,7 @@ export default {
     data() {
         return {
             loading: 0,
-            path: "",
+            path: '',
             activeStorage: null,
             uploadingFiles: false, // or an Array of files
             refreshPending: false,
@@ -161,7 +161,7 @@ export default {
     },
     computed: {
         storagesArray() {
-            let storageCodes = this.storages.split(","),
+            let storageCodes = this.storages.split(','),
                 result = [];
             storageCodes.forEach(code => {
                 result.push(availableStorages.find(item => item.code == code));
@@ -208,7 +208,7 @@ export default {
         },
         pathChanged(path) {
             this.path = path;
-            this.$emit("change", path);
+            this.$emit('change', path);
         }
     },
     created() {
@@ -217,7 +217,7 @@ export default {
     },
     mounted() {
         if (!this.path && !(this.tree && this.$vuetify.breakpoint.smAndUp)) {
-            this.pathChanged("/");
+            this.pathChanged('/');
         }
     }
 };

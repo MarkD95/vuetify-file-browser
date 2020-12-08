@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/semeniuk/vuetify-file-browser#readme",
   "dependencies": {
+    "@mdi/font": "^5.8.55",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vuetify": "^2.2.11"
