@@ -102,7 +102,7 @@ export default {
             this.$emit('loading', true);
             let url = this.endpoints.list.url
                 .replace(new RegExp('{storage}', 'g'), this.storage)
-                .replace(new RegExp('{path}', 'g'), item.path);
+                .replace(new RegExp('{path}', 'g'), item ? item.path : this.path);
 
             let config = {
                 url,
@@ -110,6 +110,7 @@ export default {
             };
 
             let response = await this.axios.request(config);
+            this.$emit('items', response.data);
 
             // eslint-disable-next-line require-atomic-updates
             item.children = response.data.map(item => {
@@ -157,8 +158,8 @@ export default {
                 this.open.push(this.path);
             }
         },
-        async refreshPending(){
-            if (this.refreshPending) {
+        async refreshPending(val){
+            if (val) {
                 let item = this.findItem(this.path);
                 await this.readFolder(item);
                 this.$emit('refreshed');

@@ -90,7 +90,7 @@
             <v-btn icon v-if="false" aria-label="Settings">
                 <v-icon>mdi-eye-settings-outline</v-icon>
             </v-btn>
-            <v-btn icon @click="load" aria-label="Refresh">
+            <v-btn icon @click="$emit('reload')" aria-label="Refresh">
                 <v-icon>mdi-refresh</v-icon>
             </v-btn>
         </v-toolbar>
@@ -108,14 +108,14 @@ export default {
         path: String,
         endpoints: Object,
         axios: Function,
-        refreshPending: Boolean
+        refreshPending: Boolean,
+        items: Array,
     },
     components: {
         Confirm
     },
     data() {
         return {
-            items: [],
             filter: ''
         };
     },
@@ -144,25 +144,6 @@ export default {
         changePath(path) {
             this.$emit('path-changed', path);
         },
-        async load() {
-            this.$emit('loading', true);
-            if (this.isDir) {
-                let url = this.endpoints.list.url
-                    .replace(new RegExp('{storage}', 'g'), this.storage)
-                    .replace(new RegExp('{path}', 'g'), this.path);
-
-                let config = {
-                    url,
-                    method: this.endpoints.list.method || 'get'
-                };
-
-                let response = await this.axios.request(config);
-                this.items = response.data;
-            } else {
-                // TODO: load file
-            }
-            this.$emit('loading', false);
-        },
         async deleteItem(item) {
             let confirmed = await this.$refs.confirm.open(
                 'Delete',
@@ -188,18 +169,6 @@ export default {
             }
         }
     },
-    watch: {
-        async path() {
-            this.items = [];
-            await this.load();
-        },
-        async refreshPending() {
-            if (this.refreshPending) {
-                await this.load();
-                this.$emit('refreshed');
-            }
-        }
-    }
 };
 </script>
 

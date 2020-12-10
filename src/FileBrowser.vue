@@ -22,7 +22,9 @@
                     :refreshPending="refreshPending"
                     v-on:path-changed="pathChanged"
                     v-on:loading="loadingChanged"
+                    v-on:items="passItems"
                     v-on:refreshed="refreshPending = false"
+                    v-on:reload="refreshPending = true"
                 ></tree>
             </v-col>
             <v-divider v-if="tree" vertical></v-divider>
@@ -32,6 +34,7 @@
                     :storage="activeStorage"
                     :icons="icons"
                     :endpoints="endpoints"
+                    :items="items"
                     :axios="axiosInstance"
                     :refreshPending="refreshPending"
                     v-on:path-changed="pathChanged"
@@ -156,7 +159,8 @@ export default {
             activeStorage: null,
             uploadingFiles: false, // or an Array of files
             refreshPending: false,
-            axiosInstance: null
+            axiosInstance: null,
+            items: [],
         };
     },
     computed: {
@@ -208,7 +212,12 @@ export default {
         },
         pathChanged(path) {
             this.path = path;
+            this.items = [];
             this.$emit('change', path);
+            this.refreshPending = true;
+        },
+        passItems(items) {
+            this.items = items;
         }
     },
     created() {
