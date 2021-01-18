@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar flat dense color="blue-grey lighten-5">
+    <v-toolbar flat dense color="secondary lighten-5">
         <v-toolbar-items>
             <v-menu offset-y v-if="storages.length > 1">
                 <template v-slot:activator="{ on }">

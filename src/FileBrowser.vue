@@ -32,6 +32,10 @@
                 <list
                     :path="path"
                     :storage="activeStorage"
+                    :showFolderActions="$props.showFolderActions"
+                    :showFileActions="$props.showFileActions"
+                    :folderActions="$props.folderActions"
+                    :fileActions="$props.fileActions"
                     :icons="icons"
                     :endpoints="endpoints"
                     :items="items"
@@ -41,6 +45,7 @@
                     v-on:loading="loadingChanged"
                     v-on:refreshed="refreshPending = false"
                     v-on:file-deleted="refreshPending = true"
+                    v-on:action="$emit('action', $event)"
                 ></list>
             </v-col>
         </v-row>
@@ -70,24 +75,6 @@ import Toolbar from './Toolbar.vue';
 import Tree from './Tree.vue';
 import List from './List.vue';
 import Upload from './Upload.vue';
-
-const availableStorages = [
-    {
-        name: 'Local',
-        code: 'local',
-        icon: 'mdi-folder-multiple-outline'
-    },
-    {
-        name: 'Amazon S3',
-        code: 's3',
-        icon: 'mdi-amazon-drive'
-    }
-    /*{
-        name: 'Dropbox',
-        code: 'dropbox',
-        icon: 'mdi-dropbox'
-    }*/
-];
 
 const endpoints = {
     list: { url: '/storage/{storage}/list?path={path}', method: 'get' },
@@ -130,10 +117,75 @@ export default {
         event: 'change'
     },
     props: {
+        // Available Storages array of objects
+        availableStorages: {
+            type: Array,
+            validator: function (value) {
+                function isObject(val) {
+                    return Object.prototype.toString.call(val) == '[object Object]'
+                }
+                for (let i = 0; i < value.length; i++) {
+                    const s = value[i];
+                    if (!isObject(s)) {
+                        return false;
+                    }
+                    if (s['name'] == undefined || s['code'] == undefined || s['icon'] == undefined) {
+                        return false;
+                    }
+                }
+                // The value must match one of these strings
+                return true;
+            },
+            default: () => {return [
+                {
+                    name: 'Local',
+                    code: 'local',
+                    icon: 'mdi-folder-multiple-outline'
+                },
+                {
+                    name: 'Amazon S3',
+                    code: 's3',
+                    icon: 'mdi-amazon-drive'
+                }
+                /*{
+                    name: 'Dropbox',
+                    code: 'dropbox',
+                    icon: 'mdi-dropbox'
+                }*/
+            ]}
+        },
+        showFolderActions: {
+            type: Boolean,
+            default: false,
+        },
+        folderActions: {
+            type: Array,
+            default: () => {return [
+                {title: 'View', icon: 'mdi-eye', action: function (item) {this.$emit('action', {item, type: 'folder', actionType: 'view'})}},
+                {title: 'Copy', icon: 'mdi-file-document-multiple', action: function (item) {this.$emit('action', {item, type: 'folder', actionType: 'copy'})}},
+                {title: 'Move', icon: 'mdi-file-move', action: function (item) {this.$emit('action', {item, type: 'folder', actionType: 'move'})}},
+                {title: 'Delete', icon: 'mdi-file-remove', color: 'error', action: function (item) {this.$emit('action', {item, type: 'folder', actionType: 'delete'})}},
+            ]}
+        },
+        showFileActions: {
+            type: Boolean,
+            default: false,
+        },
+        fileActions: {
+            type: Array,
+            default: () => {return [
+                {title: 'View', icon: 'mdi-eye', action: function (item) {this.$emit('action', {item, type: 'file', actionType: 'view'})}},
+                {title: 'Copy', icon: 'mdi-file-document-multiple', action: function (item) {this.$emit('action', {item, type: 'file', actionType: 'copy'})}},
+                {title: 'Move', icon: 'mdi-file-move', action: function (item) {this.$emit('action', {item, type: 'file', actionType: 'move'})}},
+                {title: 'Delete', icon: 'mdi-file-remove', color: 'error', action: function (item) {this.$emit('action', {item, type: 'file', actionType: 'delete'})}},
+            ]}
+        },
         // comma-separated list of active storage codes
         storages: {
             type: String,
-            default: () => availableStorages.map(item => item.code).join(',')
+            default() {
+                return this.$props.availableStorages.map(item => item.code).join(',')
+            }
         },
         // code of default storage
         storage: { type: String, default: 'local' },
@@ -168,7 +220,7 @@ export default {
             let storageCodes = this.storages.split(','),
                 result = [];
             storageCodes.forEach(code => {
-                result.push(availableStorages.find(item => item.code == code));
+                result.push(this.$props.availableStorages.find(item => item.code == code));
             });
             return result;
         }

@@ -16,6 +16,7 @@
                     v-for="item in dirs"
                     :key="item.basename"
                     @click="changePath(item.path)"
+                    @contextmenu.prevent="showFolder($event, item)"
                     class="pl-0"
                 >
                     <v-list-item-avatar class="ma-0">
@@ -33,35 +34,79 @@
                         </v-btn>
                     </v-list-item-action>
                 </v-list-item>
+                <v-menu
+                  v-model="showFolderMenu"
+                  :position-x="x"
+                  :position-y="y"
+                  absolute
+                  offset-y
+                  style="max-width: 600px"
+                >
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-subtitle v-if="!!itemConcerned">{{itemConcerned.name}}</v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item
+                      v-for="(item, index) in $props.folderActions"
+                      :key="index"
+                      @click="item.action(itemConcerned)"
+                    >
+                      <v-list-item-avatar><v-icon :color="item.color ? item.color : ''">{{item.icon}}</v-icon></v-list-item-avatar>
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
             </v-list>
             <v-divider v-if="dirs.length && files.length"></v-divider>
             <v-list subheader v-if="files.length">
                 <v-subheader>Files</v-subheader>
-                <v-list-item
-                    v-for="item in files"
-                    :key="item.basename"
-                    @click="changePath(item.path)"
-                    class="pl-0"
-                >
-                    <v-list-item-avatar class="ma-0">
-                        <v-icon>{{ icons[item.extension.toLowerCase()] || icons['other'] }}</v-icon>
-                    </v-list-item-avatar>
+                  <v-list-item
+                      v-for="item in files"
+                      :key="item.basename"
+                      @contextmenu.prevent="showFile($event, item)"
+                      class="pl-0"
+                  >
+                      <v-list-item-avatar class="ma-0">
+                          <v-icon>{{ icons[item.extension.toLowerCase()] || icons['other'] }}</v-icon>
+                      </v-list-item-avatar>
 
-                    <v-list-item-content class="py-2">
-                        <v-list-item-title v-text="item.basename"></v-list-item-title>
-                        <v-list-item-subtitle>{{ formatBytes(item.size) }}</v-list-item-subtitle>
-                    </v-list-item-content>
+                      <v-list-item-content class="py-2">
+                          <v-list-item-title v-text="item.basename"></v-list-item-title>
+                          <v-list-item-subtitle>{{ formatBytes(item.size) }}</v-list-item-subtitle>
+                      </v-list-item-content>
 
-                    <v-list-item-action>
-                        <v-btn icon @click.stop="deleteItem(item)">
-                            <v-icon color="grey lighten-1">mdi-delete-outline</v-icon>
-                        </v-btn>
-                        <v-btn icon v-if="false">
-                            <v-icon color="grey lighten-1">mdi-information</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
-                </v-list-item>
+                      <v-list-item-action>
+                          <v-btn icon @click.stop="deleteItem(item)">
+                              <v-icon color="grey lighten-1">mdi-delete-outline</v-icon>
+                          </v-btn>
+                          <v-btn icon v-if="false">
+                              <v-icon color="grey lighten-1">mdi-information</v-icon>
+                          </v-btn>
+                      </v-list-item-action>
+                  </v-list-item>
             </v-list>
+            <v-menu
+              v-model="showFileMenu"
+              :position-x="x"
+              :position-y="y"
+              absolute
+              offset-y
+              style="max-width: 600px"
+            >
+              <v-list>
+                <v-list-item>
+                  <v-list-item-subtitle v-if="!!itemConcerned">{{itemConcerned.name}}</v-list-item-subtitle>
+                </v-list-item>
+                <v-list-item
+                  v-for="(item, index) in $props.fileActions"
+                  :key="index+item.title"
+                  @click="item.action(itemConcerned)"
+                >
+                  <v-list-item-avatar><v-icon :color="item.color ? item.color : ''">{{item.icon}}</v-icon></v-list-item-avatar>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
         </v-card-text>
         <v-card-text
             v-else-if="filter"
@@ -110,13 +155,22 @@ export default {
         axios: Function,
         refreshPending: Boolean,
         items: Array,
+        showFolderActions: Boolean,
+        folderActions: Array,
+        showFileActions: Boolean,
+        fileActions: Array,
     },
     components: {
         Confirm
     },
     data() {
         return {
-            filter: ''
+            filter: '',
+            showFolderMenu: false,
+            showFileMenu: false,
+            x: 0,
+            y: 0,
+            itemConcerned: null
         };
     },
     computed: {
@@ -167,7 +221,34 @@ export default {
                 this.$emit('file-deleted');
                 this.$emit('loading', false);
             }
-        }
+        },
+        showFolder (e, item) {
+          e.preventDefault()
+          if (this.$props.showFolderActions == false) {
+            return
+          }
+          this.showFolderMenu = false
+          this.itemConcerned = item
+          this.x = e.clientX
+          this.y = e.clientY
+          this.$nextTick(() => {
+            this.showFolderMenu = true
+          })
+        },
+        showFile (e, item) {
+          e.preventDefault()
+          if (this.$props.showFileActions == false) {
+            return
+          }
+          this.showFileMenu = false
+          this.itemConcerned = item
+          this.x = e.clientX
+          this.y = e.clientY
+          this.$nextTick(() => {
+            this.showFileMenu = true
+          })
+        },
+
     },
 };
 </script>
